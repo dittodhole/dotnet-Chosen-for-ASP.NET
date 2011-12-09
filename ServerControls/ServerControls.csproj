@@ -68,14 +68,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
+    <Compile Include="ExtensionMethods\ControlExtensionMethods.cs" />
     <Compile Include="ExtensionMethods\SuggestListBoxExtensionMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\jquery\JQuery.cs" />
+    <Compile Include="Resources\jquery\plugins\chosen\Chosen.cs" />
     <Compile Include="SuggestListBox.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\jquery\plugins\chosen-sprite.png" />
-    <Content Include="Resources\jquery\plugins\chosen.css" />
-    <Content Include="Resources\jquery\plugins\chosen.jquery.js" />
+    <EmbeddedResource Include="Resources\jquery\jquery-1.7.1.min.js" />
+    <EmbeddedResource Include="Resources\jquery\plugins\chosen\chosen-sprite.png" />
+    <EmbeddedResource Include="Resources\jquery\plugins\chosen\chosen.css" />
+    <EmbeddedResource Include="Resources\jquery\plugins\chosen\chosen.jquery.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

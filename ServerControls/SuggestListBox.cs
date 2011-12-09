@@ -12,6 +12,7 @@ namespace ServerControls
 	public sealed class SuggestListBox : ListBox, INamingContainer
 	{
 		public static string DefaultNoElementsText = "Es wurden keine Elemente gefunden: ";
+
 		public SuggestListBox()
 		{
 			this.Width = new Unit(80, UnitType.Percentage);
@@ -204,11 +205,8 @@ namespace ServerControls
 		{
 			base.OnInit(e);
 
-			if (this.Page != null)
-			{
-				// TODO
-				//this.Page.RegisterChosen();
-			}
+			this.RegisterJQuery();
+			this.RegisterChosen();
 		}
 
 		protected override void CreateChildControls()
@@ -255,8 +253,8 @@ namespace ServerControls
 			const string initializationScript = @"
 <script type=""{0}"">
 $(function () {{
-	var $suggestDropDownList = $('#{1}');
-	$suggestDropDownList.chosen({{
+	var $suggestListBox = $('#{1}');
+	$suggestListBox.chosen({{
 		'allow_single_deselect': true,
 		'no_results_text': '{2}'
 	}});
@@ -264,7 +262,7 @@ $(function () {{
 </script>";
 
 			var script = string.Format(initializationScript,
-				Constants.JavaScriptContentType,
+				Constants.ContentTypeJavaScript,
 				this.ClientID,
 				HttpUtility.HtmlEncode(this.NoResultsText));
 
