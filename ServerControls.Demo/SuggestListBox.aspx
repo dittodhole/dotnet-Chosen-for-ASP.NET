@@ -5,12 +5,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
+	<style type="text/css">
+		.ui-state-error
+		{
+			border: 1px solid red;
+		}
+	</style>
 </head>
 <body>
     <form id="form1" runat="server">
+		<asp:ValidationSummary runat="server" />
 		<ServerControls:SuggestListBox runat="server" ID="DemoSuggestListBox"
 			DataValueField="ID" DataTextField="Text"
 			IsMandatory="true" ErrorMessageForMandatoryFailed="You need to select some Foo" />
+		<asp:Button runat="server" Text="submit" />
     </form>
 </body>
 </html>

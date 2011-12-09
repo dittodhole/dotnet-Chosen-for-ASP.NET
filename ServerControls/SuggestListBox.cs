@@ -11,12 +11,12 @@ namespace ServerControls
 {
 	public sealed class SuggestListBox : ListBox, INamingContainer
 	{
-		public static string DefaultNoElementsText = "Es wurden keine Elemente gefunden: ";
+		public static string DefaultNoElementsText = "Es wurden keine Elemente gefunden: "; // yep, I know - somehow impelment sth like translatable ...
 
 		public SuggestListBox()
 		{
 			this.Width = new Unit(80, UnitType.Percentage);
-			this.AppendDataBoundItems = true;
+			this.AppendDataBoundItems = true; // have a look @ line 328
 		}
 
 		#region viewStateKeys
@@ -37,7 +37,7 @@ namespace ServerControls
 			Enabled = false,
 			ErrorMessage = "ErrorMessageForMandatoryFailed",
 			SetFocusOnError = true
-		};
+		}; // I do not want to output the validator directly - I (and you) will need a System.Web.UI.WebControls.ValidationSummary ...
 
 		#endregion
 
@@ -45,6 +45,8 @@ namespace ServerControls
 		{
 			get
 			{
+				// as .Items are of type ListItemCollection, and this class only implements System.Collections.IEnumerable,
+				// we have to do some .OfType<T>() here ... ugly but helpful
 				return this.Items.OfType<ListItem>();
 			}
 		}
@@ -53,6 +55,7 @@ namespace ServerControls
 		{
 			get
 			{
+				// I am planning to support more implicit validators - I will add them someday
 				yield return this._mandatoryValidator;
 			}
 		}
@@ -97,6 +100,7 @@ namespace ServerControls
 
 		public bool HideMandatoryIcon
 		{
+			// you could take advantage of this property by checking it when you render an icon ...
 			get
 			{
 				var obj = this.ViewState[ViewStateKeyHideMandatoryIcon];
@@ -170,6 +174,8 @@ namespace ServerControls
 		{
 			base.PerformDataBinding(dataSource);
 
+			// TODO find some better way for injection ... fear there ain't any ...
+
 			foreach (var element in dataSource)
 			{
 				string elementValue;
@@ -220,6 +226,7 @@ namespace ServerControls
 		protected override void AddAttributesToRender(HtmlTextWriter writer)
 		{
 			{
+				// not the best place in here - but: it will not be persisted to the viewState
 				var anyFailedValidators = (from baseValidator in this.Validators
 				                           where !baseValidator.IsValid
 				                           select baseValidator).Any();
@@ -232,6 +239,7 @@ namespace ServerControls
 			base.AddAttributesToRender(writer);
 
 			{
+				// we could also do some .data() in the client-script ...
 				var defaultElementText = this.DefaultElementText;
 				if (!string.IsNullOrEmpty(defaultElementText))
 				{
@@ -240,6 +248,7 @@ namespace ServerControls
 			}
 
 			{
+				// valid xhtml - against the original docu :)
 				if (this.SelectionMode
 				    == ListSelectionMode.Multiple)
 				{
@@ -250,6 +259,7 @@ namespace ServerControls
 
 		public override void RenderBeginTag(HtmlTextWriter writer)
 		{
+			// there might be a better way, but this is just the basic registration - no need to opt this :)
 			const string initializationScript = @"
 <script type=""{0}"">
 $(function () {{
@@ -273,6 +283,8 @@ $(function () {{
 
 		protected override void RenderContents(HtmlTextWriter writer)
 		{
+			// this is an adapted logic from the original implentation ...
+			// take care of line 291 ... this does the magic with (in)active-elements
 			var flag = false;
 			foreach (var listItem in this.ListItems)
 			{
@@ -315,6 +327,8 @@ $(function () {{
 
 		public override void DataBind()
 		{
+			// as chosen needs a plain option to render the magic "select something"
+
 			this.Items.Clear();
 
 			{
